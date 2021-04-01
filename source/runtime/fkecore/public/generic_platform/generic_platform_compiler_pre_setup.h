@@ -1,0 +1,32 @@
+// Copyright 2021 Felix Kahle. All rights reserved.
+
+#pragma once
+
+#ifndef FKE_PRAGMA_DISABLE_DEPRECATION_WARNINGS
+	#define FKE_PRAGMA_DISABLE_DEPRECATION_WARNINGS
+#endif
+
+#ifndef FKE_PRAGMA_ENABLE_DEPRECATION_WARNINGS
+	#define FKE_PRAGMA_ENABLE_DEPRECATION_WARNINGS
+#endif
+
+#ifndef FKE_EMIT_CUSTOM_WARNING_AT_LINE
+	#define FKE_EMIT_CUSTOM_WARNING_AT_LINE(line, warning)
+#endif
+
+#ifndef FKE_EMIT_CUSTOM_WARNING
+	#define FKE_EMIT_CUSTOM_WARNING(warning) \
+			FKE_EMIT_CUSTOM_WARNING_AT_LINE(__LINE__, warning)
+#endif
+
+#ifndef FKE_DEPRECATED_MACRO
+	#define FKE_DEPRECATED_MACRO(version, message) FKE_EMIT_CUSTOM_WARNING(message " Please update your code to the new API.")
+#endif
+
+#ifndef FKE_PRAGMA_DEFAULT_VISIBILITY_START
+	#define FKE_PRAGMA_DEFAULT_VISIBILITY_START
+#endif
+
+#ifndef FKE_PRAGMA_DEFAULT_VISIBILITY_END
+	#define FKE_PRAGMA_DEFAULT_VISIBILITY_END
+#endif

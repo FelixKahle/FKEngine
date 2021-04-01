@@ -1,0 +1,20 @@
+﻿{
+  "configurations": [
+    {
+      "name": "Win64 Shipping",
+      "configurationType": "Release",
+      "generator": "Visual Studio 16 2019 Win64",
+      "buildRoot": "${projectDir}\\solutions\\shipping\\win64",
+      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=tools\\cmake\\toolchain\\windows.cmake -DFKENGINE_CONFIGURATION=Shipping",
+      "variables": []
+    },
+    {
+      "name": "Win64 Development",
+      "configurationType": "Debug",
+      "generator": "Visual Studio 16 2019 Win64",
+      "buildRoot": "${projectDir}\\solutions\\shipping\\win64",
+      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=tools\\cmake\\toolchain\\windows.cmake -DFKENGINE_CONFIGURATION=Development",
+      "variables": []
+    }
+  ]
+}
