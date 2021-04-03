@@ -457,23 +457,23 @@
 #include <cstdint>
 
 /** ANSI character. 8-Bit fixed-width representation of 7-bit character. */
-typedef fkengine::platform_types::ansichar_t ansichar_t;
+typedef fkengine::fkecore::platform_types::ansichar_t ansichar_t;
 /** Wide character. ?-Bit fixed-width representation of the platform's natural wide character set. Could be different sizes on different platforms. */
-typedef fkengine::platform_types::widechar_t widechar_t;
+typedef fkengine::fkecore::platform_types::widechar_t widechar_t;
 
 #ifndef __cpp_char8_t
 /** 8-Bit character. */
-typedef fkengine::platform_types::char8_t char8_t;
+typedef fkengine::fkecore::platform_types::char8_t char8_t;
 #endif
 #ifndef __cpp_unicode_characters
 /** 16-Bit character. */
-typedef fkengine::platform_types::char16_t char16_t;
+typedef fkengine::fkecore::platform_types::char16_t char16_t;
 /** 32-Bit character. */
-typedef fkengine::platform_types::char32_t char32_t;
+typedef fkengine::fkecore::platform_types::char32_t char32_t;
 #endif
 
 /** Switchable character. Can be ansichar_t or widechar_t depending on the build settings. */
-typedef fkengine::platform_types::char_t char_t;
+typedef fkengine::fkecore::platform_types::char_t char_t;
 /** An 8-bit character containing a UTF8 (Unicode, 8-bit, variable-width) code unit. */
 typedef char8_t	utf8char_t;
 /** A 16-bit character containing a UCS2 (Unicode, 16-bit, fixed-width) code unit, used for compatibility with 'Windows TCHAR' across multiple platforms. */
@@ -484,96 +484,99 @@ typedef char16_t utf16char_t;
 typedef char32_t utf32char_t;
 
 /** An unsigned integer the same size_t as a pointer. */
-typedef fkengine::platform_types::uptrint_t uptrint_t;
+typedef fkengine::fkecore::platform_types::uptrint_t uptrint_t;
 /** A signed integer the same size_t as a pointer. */
-typedef fkengine::platform_types::ptrint_t ptrint_t;
+typedef fkengine::fkecore::platform_types::ptrint_t ptrint_t;
 /** An unsigned integer the same size_t as a pointer, the same as uptrint_t. */
-typedef fkengine::platform_types::size_t size_t;
+typedef fkengine::fkecore::platform_types::size_t size_t;
 /** An integer the same size_t as a pointer, the same as ptrint_t. */
-typedef fkengine::platform_types::ssize_t ssize_t;
+typedef fkengine::fkecore::platform_types::ssize_t ssize_t;
 
 /** The type of the NULL constant. */
-typedef fkengine::platform_types::typeofnull_t typeofnull_t;
+typedef fkengine::fkecore::platform_types::typeofnull_t typeofnull_t;
 /** The type of the C++ nullptr keyword. */
-typedef fkengine::platform_types::typeofnullptr_t typeofnullptr_t;
+typedef fkengine::fkecore::platform_types::typeofnullptr_t typeofnullptr_t;
 
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	namespace type_tests
+	namespace fkecore
 	{
-		template<typename, typename> struct are_types_equal;
-
-		template <typename A, typename B>
-		struct are_types_equal
+		namespace type_tests
 		{
-			static FKE_CONSTEXPR bool value = false;
-		};
+			template<typename, typename> struct are_types_equal;
 
-		template <typename T>
-		struct are_types_equal<T, T>
-		{
-			static FKE_CONSTEXPR bool value = true;
-		};
+			template <typename A, typename B>
+			struct are_types_equal
+			{
+				static FKE_CONSTEXPR bool value = false;
+			};
 
-		static_assert(!FKE_PLATFORM_TCHAR_IS_4_BYTES || sizeof(char_t) == 4, "char_t size_t must be 4 bytes.");
-		//static_assert(FKE_PLATFORM_TCHAR_IS_4_BYTES || sizeof(char_t) == 2, "char_t size_t must be 2 bytes.");
+			template <typename T>
+			struct are_types_equal<T, T>
+			{
+				static FKE_CONSTEXPR bool value = true;
+			};
 
-		static_assert(!FKE_PLATFORM_WCHAR_IS_4_BYTES || sizeof(wchar_t) == 4, "wchar_t size_t must be 4 bytes.");
-		static_assert(FKE_PLATFORM_WCHAR_IS_4_BYTES || sizeof(wchar_t) == 2, "wchar_t size_t must be 2 bytes.");
+			static_assert(!FKE_PLATFORM_TCHAR_IS_4_BYTES || sizeof(char_t) == 4, "char_t size_t must be 4 bytes.");
+			//static_assert(FKE_PLATFORM_TCHAR_IS_4_BYTES || sizeof(char_t) == 2, "char_t size_t must be 2 bytes.");
 
-		static_assert(FKE_PLATFORM_32BITS || FKE_PLATFORM_64BITS, "Type tests pointer size_t failed.");
-		static_assert(FKE_PLATFORM_32BITS != FKE_PLATFORM_64BITS, "Type tests pointer exclusive failed.");
-		static_assert(!FKE_PLATFORM_64BITS || sizeof(void*) == 8, "Pointer size_t is 64bit, but pointers are short.");
-		static_assert(FKE_PLATFORM_64BITS || sizeof(void*) == 4, "Pointer size_t is 32bit, but pointers are long.");
+			static_assert(!FKE_PLATFORM_WCHAR_IS_4_BYTES || sizeof(wchar_t) == 4, "wchar_t size_t must be 4 bytes.");
+			static_assert(FKE_PLATFORM_WCHAR_IS_4_BYTES || sizeof(wchar_t) == 2, "wchar_t size_t must be 2 bytes.");
 
-		static_assert(char(-1) < char(0), "Unsigned char type test failed.");
+			static_assert(FKE_PLATFORM_32BITS || FKE_PLATFORM_64BITS, "Type tests pointer size_t failed.");
+			static_assert(FKE_PLATFORM_32BITS != FKE_PLATFORM_64BITS, "Type tests pointer exclusive failed.");
+			static_assert(!FKE_PLATFORM_64BITS || sizeof(void*) == 8, "Pointer size_t is 64bit, but pointers are short.");
+			static_assert(FKE_PLATFORM_64BITS || sizeof(void*) == 4, "Pointer size_t is 32bit, but pointers are long.");
 
-		static_assert((!are_types_equal<ansichar_t, widechar_t>::value), "ansichar_t and widechar_t should be different types.");
-		static_assert((!are_types_equal<ansichar_t, ucs2char_t>::value), "ansichar_t and char16_t should be different types.");
-		static_assert((!are_types_equal<widechar_t, ucs2char_t>::value), "widechar_t and char16_t should be different types.");
-		static_assert((are_types_equal<char_t, ansichar_t>::value == true || are_types_equal<char_t, widechar_t>::value == true), "char_t should either be ansichar_t or widechar_t.");
+			static_assert(char(-1) < char(0), "Unsigned char type test failed.");
 
-		static_assert(sizeof(uint8_t) == 1, "uint8_t type size_t test failed.");
-		static_assert(int32_t(uint8_t(-1)) == 0xFF, "uint8_t type sign test failed.");
+			static_assert((!are_types_equal<ansichar_t, widechar_t>::value), "ansichar_t and widechar_t should be different types.");
+			static_assert((!are_types_equal<ansichar_t, ucs2char_t>::value), "ansichar_t and char16_t should be different types.");
+			static_assert((!are_types_equal<widechar_t, ucs2char_t>::value), "widechar_t and char16_t should be different types.");
+			static_assert((are_types_equal<char_t, ansichar_t>::value == true || are_types_equal<char_t, widechar_t>::value == true), "char_t should either be ansichar_t or widechar_t.");
 
-		static_assert(sizeof(uint16_t) == 2, "uint16_t type size_t test failed.");
-		static_assert(int32_t(uint16_t(-1)) == 0xFFFF, "uint16_t type sign test failed.");
+			static_assert(sizeof(uint8_t) == 1, "uint8_t type size_t test failed.");
+			static_assert(int32_t(uint8_t(-1)) == 0xFF, "uint8_t type sign test failed.");
 
-		static_assert(sizeof(uint32_t) == 4, "uint32_t type size_t test failed.");
-		static_assert(int64_t(uint32_t(-1)) == int64_t(0xFFFFFFFF), "uint32_t type sign test failed.");
+			static_assert(sizeof(uint16_t) == 2, "uint16_t type size_t test failed.");
+			static_assert(int32_t(uint16_t(-1)) == 0xFFFF, "uint16_t type sign test failed.");
 
-		static_assert(sizeof(uint64_t) == 8, "uint64_t type size_t test failed.");
-		static_assert(uint64_t(-1) > uint64_t(0), "uint64_t type sign test failed.");
+			static_assert(sizeof(uint32_t) == 4, "uint32_t type size_t test failed.");
+			static_assert(int64_t(uint32_t(-1)) == int64_t(0xFFFFFFFF), "uint32_t type sign test failed.");
+
+			static_assert(sizeof(uint64_t) == 8, "uint64_t type size_t test failed.");
+			static_assert(uint64_t(-1) > uint64_t(0), "uint64_t type sign test failed.");
 
 
-		static_assert(sizeof(int8_t) == 1, "int8_t type size_t test failed.");
-		static_assert(int32_t(int8_t(-1)) == -1, "int8_t type sign test failed.");
+			static_assert(sizeof(int8_t) == 1, "int8_t type size_t test failed.");
+			static_assert(int32_t(int8_t(-1)) == -1, "int8_t type sign test failed.");
 
-		static_assert(sizeof(int16_t) == 2, "int16_t type size_t test failed.");
-		static_assert(int32_t(int16_t(-1)) == -1, "int16_t type sign test failed.");
+			static_assert(sizeof(int16_t) == 2, "int16_t type size_t test failed.");
+			static_assert(int32_t(int16_t(-1)) == -1, "int16_t type sign test failed.");
 
-		static_assert(sizeof(int32_t) == 4, "int32_t type size_t test failed.");
-		static_assert(int64_t(int32_t(-1)) == int64_t(-1), "int32_t type sign test failed.");
+			static_assert(sizeof(int32_t) == 4, "int32_t type size_t test failed.");
+			static_assert(int64_t(int32_t(-1)) == int64_t(-1), "int32_t type sign test failed.");
 
-		static_assert(sizeof(int64_t) == 8, "int64_t type size_t test failed.");
-		static_assert(int64_t(-1) < int64_t(0), "int64_t type sign test failed.");
+			static_assert(sizeof(int64_t) == 8, "int64_t type size_t test failed.");
+			static_assert(int64_t(-1) < int64_t(0), "int64_t type sign test failed.");
 
-		static_assert(sizeof(ansichar_t) == 1, "ansichar_t type size_t test failed.");
-		static_assert(int32_t(ansichar_t(-1)) == -1, "ansichar_t type sign test failed.");
+			static_assert(sizeof(ansichar_t) == 1, "ansichar_t type size_t test failed.");
+			static_assert(int32_t(ansichar_t(-1)) == -1, "ansichar_t type sign test failed.");
 
-		static_assert(sizeof(widechar_t) == 2 || sizeof(widechar_t) == 4, "widechar_t type size_t test failed.");
+			static_assert(sizeof(widechar_t) == 2 || sizeof(widechar_t) == 4, "widechar_t type size_t test failed.");
 
-		static_assert(sizeof(ucs2char_t) == 2, "ucs2char_t type size_t test failed.");
+			static_assert(sizeof(ucs2char_t) == 2, "ucs2char_t type size_t test failed.");
 
-		static_assert(sizeof(ptrint_t) == sizeof(void*), "ptrint_t type size_t test failed.");
-		static_assert(ptrint_t(-1) < ptrint_t(0), "ptrint_t type sign test failed.");
+			static_assert(sizeof(ptrint_t) == sizeof(void*), "ptrint_t type size_t test failed.");
+			static_assert(ptrint_t(-1) < ptrint_t(0), "ptrint_t type sign test failed.");
 
-		static_assert(sizeof(uptrint_t) == sizeof(void*), "uptrint_t type size_t test failed.");
-		static_assert(uptrint_t(-1) > uptrint_t(0), "uptrint_t type sign test failed.");
+			static_assert(sizeof(uptrint_t) == sizeof(void*), "uptrint_t type size_t test failed.");
+			static_assert(uptrint_t(-1) > uptrint_t(0), "uptrint_t type sign test failed.");
 
-		static_assert(sizeof(size_t) == sizeof(void*), "size_t type size_t test failed.");
-		static_assert(size_t(-1) > size_t(0), "size_t type sign test failed.");
+			static_assert(sizeof(size_t) == sizeof(void*), "size_t type size_t test failed.");
+			static_assert(size_t(-1) > size_t(0), "size_t type sign test failed.");
+		}
 	}
 }
 

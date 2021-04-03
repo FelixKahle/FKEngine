@@ -15,28 +15,28 @@
 	{ \
 		va_list ap; \
 		va_start(ap, lastarg); \
-		c_string::get_var_args(msg, msgsize, fmt, ap); \
+		fkengine::fkecore::c_string::get_var_args(msg, msgsize, fmt, ap); \
 		va_end(ap); \
 	}
 #define FKE_GET_VARARGS_WIDE(msg, msgsize, len, lastarg, fmt) \
 	{ \
 		va_list ap; \
 		va_start(ap, lastarg); \
-		c_string_wide::get_var_args(msg, msgsize, fmt, ap); \
+		fkengine::fkecore::c_string_wide::get_var_args(msg, msgsize, fmt, ap); \
 		va_end(ap); \
 	}
 #define FKE_GET_VARARGS_ANSI(msg, msgsize, len, lastarg, fmt) \
 	{ \
 		va_list ap; \
 		va_start(ap, lastarg); \
-		c_string_ansi::get_var_args(msg, msgsize, fmt, ap); \
+		fkengine::fkecore::c_string_ansi::get_var_args(msg, msgsize, fmt, ap); \
 		va_end(ap); \
 	}
 #define FKE_GET_VARARGS_RESULT(msg, msgsize, len, lastarg, fmt, result) \
 	{ \
 		va_list ap; \
 		va_start(ap, lastarg); \
-		result = c_string::get_var_args(msg, msgsize, fmt, ap); \
+		result = fkengine::fkecore::c_string::get_var_args(msg, msgsize, fmt, ap); \
 		if (result >= msgsize) \
 		{ \
 			result = -1; \
@@ -47,7 +47,7 @@
 	{ \
 		va_list ap; \
 		va_start(ap, lastarg); \
-		result = c_string_wide::get_var_args(msg, msgsize, fmt, ap); \
+		result = fkengine::fkecore::c_string_wide::get_var_args(msg, msgsize, fmt, ap); \
 		if (result >= msgsize) \
 		{ \
 			result = -1; \
@@ -58,7 +58,7 @@
 	{ \
 		va_list ap; \
 		va_start(ap, lastarg); \
-		result = c_string_ansi::get_var_args(msg, msgsize, fmt, ap); \
+		result = fkengine::fkecore::c_string_ansi::get_var_args(msg, msgsize, fmt, ap); \
 		if (result >= msgsize) \
 		{ \
 			result = -1; \

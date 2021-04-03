@@ -5,6 +5,7 @@
 // Needed for FKE_DLLEXPORT and FKE_DLLIMPORT.
 #include "hardware_abstraction_layer/platform.h"
 #include "module/module_setup.h"
+#include "fkecore.h"
 
 #if FKEENTITIES_LINK_DYNAMICALLY
 	// fkeentities_EXPORTS is defined CMake.
@@ -20,4 +21,13 @@
 	#define FKEENTITIES_API
 #endif
 
-//FKE_DEFINE_MODULE(fkeentities, FKEENTITIES_API)
+namespace fkengine
+{
+	namespace fkeentities
+	{
+		using namespace fkecore;
+		FKE_DECLARE_LOG_CATEGORY_EXTERN(fkeentities_log);
+		FKEENTITIES_API int lol();
+	}
+}
+

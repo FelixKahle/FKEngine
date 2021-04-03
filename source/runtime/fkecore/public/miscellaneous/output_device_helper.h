@@ -12,12 +12,15 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	struct FKECORE_API output_device_helper
+	namespace fkecore
 	{
-		FKE_STATIC_STRUCT(output_device_helper)
+		struct FKECORE_API output_device_helper
+		{
+			FKE_STATIC_STRUCT(output_device_helper)
 
-		static const char_t* log_type_to_string(log_type type);
+				static const char_t* log_type_to_string(log_type type);
 
-		static char_t_string format_log_line(log_type type, const char_t_string& category, const char_t* message = nullptr, const double time = -1.0, const bool show_type = true);
-	};
+			static char_t_string format_log_line(log_type type, const char_t_string& category, const char_t* message = nullptr, const double time = -1.0, const bool show_type = true);
+		};
+	}
 }

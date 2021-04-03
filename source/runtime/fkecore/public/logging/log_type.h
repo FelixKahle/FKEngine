@@ -7,13 +7,16 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	enum class log_type : uint8_t
+	namespace fkecore
 	{
-		no_logging = 0,
-		fatal,
-		error,
-		warning,
-		display,
-		log
-	};
+		enum class log_type : uint8_t
+		{
+			no_logging = 0,
+			fatal,
+			error,
+			warning,
+			display,
+			log
+		};
+	}
 }

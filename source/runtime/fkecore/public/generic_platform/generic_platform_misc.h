@@ -7,19 +7,23 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	/** Miscellaneous platform functions. */
-	struct FKECORE_API generic_platform_misc
+	namespace fkecore
 	{
-		FKE_STATIC_STRUCT(generic_platform_misc)
 
-		/** Return true if a debugger is present */
-		FKE_FORCEINLINE static bool is_debugger_present()
+		/** Miscellaneous platform functions. */
+		struct FKECORE_API generic_platform_misc
 		{
+			FKE_STATIC_STRUCT(generic_platform_misc)
+
+				/** Return true if a debugger is present */
+				FKE_FORCEINLINE static bool is_debugger_present()
+			{
 #if FKE_BUILD_SHIPPING
-			return 0;
+				return 0;
 #else
-			return 1;
+				return 1;
 #endif
-		}
-	};
+			}
+		};
+	}
 }

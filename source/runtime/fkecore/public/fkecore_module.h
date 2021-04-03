@@ -19,5 +19,3 @@
 	/** Exports/Imports symbols or does nothing. Depends on build settings. */
 	#define FKECORE_API
 #endif
-
-FKE_DEFINE_MODULE(fkecore, FKECORE_API)

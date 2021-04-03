@@ -8,10 +8,13 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-#if !FKE_BUILD_SHIPPING
-	bool windows_platform_misc::is_debugger_present()
+	namespace fkecore
 	{
-		return !!::IsDebuggerPresent();
-	}
+#if !FKE_BUILD_SHIPPING
+		bool windows_platform_misc::is_debugger_present()
+		{
+			return !!::IsDebuggerPresent();
+		}
 #endif
+	}
 }

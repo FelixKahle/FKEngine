@@ -5,3 +5,4 @@
 #include "fkecore_types.h"
 #include "miscellaneous/standard_library_include.h"
 #include "miscellaneous/c_string.h"
+#include "logging/log_macros.h"

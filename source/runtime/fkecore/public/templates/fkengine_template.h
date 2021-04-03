@@ -5,15 +5,18 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	class noncopyable
+	namespace fkecore
 	{
-	protected:
-		// ensure the class cannot be constructed directly
-		noncopyable() {}
-		// the class should not be used polymorphically
-		~noncopyable() {}
-	private:
-		noncopyable(const noncopyable&);
-		noncopyable& operator=(const noncopyable&);
-	};
+		class noncopyable
+		{
+		protected:
+			// ensure the class cannot be constructed directly
+			noncopyable() {}
+			// the class should not be used polymorphically
+			~noncopyable() {}
+		private:
+			noncopyable(const noncopyable&);
+			noncopyable& operator=(const noncopyable&);
+		};
+	}
 }

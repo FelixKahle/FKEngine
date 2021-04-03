@@ -13,4 +13,4 @@ namespace fkengine
 	}
 }
 
-#define FKE_GLOBAL_LOG_SINGLETON() fkengine::output_device_redirector::get()
+#define FKE_GLOBAL_LOG_SINGLETON() fkengine::fkecore::output_device_redirector::get()

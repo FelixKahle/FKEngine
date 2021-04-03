@@ -7,11 +7,13 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-    template<typename t>
-    struct type_tag
+    namespace fkecore
     {
-        FKE_CONSTEXPR type_tag() = default;
-        using type = t;
-    };
-
+        template<typename t>
+        struct type_tag
+        {
+            FKE_CONSTEXPR type_tag() = default;
+            using type = t;
+        };
+    }
 }

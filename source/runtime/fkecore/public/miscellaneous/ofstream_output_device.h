@@ -10,18 +10,21 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	class FKECORE_API ofstream_output_device : public output_device
+	namespace fkecore
 	{
-	public:
+		class FKECORE_API ofstream_output_device : public output_device
+		{
+		public:
 
-		ofstream_output_device(const char_t* output_file_name);
-		~ofstream_output_device();
+			ofstream_output_device(const char_t* output_file_name);
+			~ofstream_output_device();
 
-		virtual void serialize(const char_t* v, log_type type, const char_t_string& category) override;
-		virtual void serialize(const char_t* v, log_type type, const char_t_string& category, const double time) override;
-		virtual void flush() override;
+			virtual void serialize(const char_t* v, log_type type, const char_t_string& category) override;
+			virtual void serialize(const char_t* v, log_type type, const char_t_string& category, const double time) override;
+			virtual void flush() override;
 
-	private:
-		basic_ofstream<char_t> device_ofstream;
-	};
+		private:
+			basic_ofstream<char_t> device_ofstream;
+		};
+	}
 }

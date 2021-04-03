@@ -10,131 +10,134 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-    struct type_id
+    namespace fkecore
     {
-        FKE_CONSTEXPR type_id(const compile_time_ansi_string& name) :
-            actual_name{ name }
-        {}
-
-        FKE_CONSTEXPR type_id() :
-            type_id{ "void" }
-        {}
-
-        type_id& operator=(const type_id&) = default;
-
-        FKE_CONSTEXPR uint64_t hash() const
+        struct type_id
         {
-            return actual_name.hash();
+            FKE_CONSTEXPR type_id(const compile_time_ansi_string& name) :
+                actual_name{ name }
+            {}
+
+            FKE_CONSTEXPR type_id() :
+                type_id{ "void" }
+            {}
+
+            type_id& operator=(const type_id&) = default;
+
+            FKE_CONSTEXPR uint64_t hash() const
+            {
+                return actual_name.hash();
+            }
+
+            FKE_CONSTEXPR const compile_time_ansi_string& name() const
+            {
+                return actual_name;
+            }
+
+            friend FKE_CONSTEXPR bool operator==(const type_id& lhs, const type_id& rhs)
+            {
+                return lhs.hash() == rhs.hash();
+            }
+
+            friend FKE_CONSTEXPR bool operator!=(const type_id& lhs, const type_id& rhs)
+            {
+                return !(lhs == rhs);
+            }
+
+        private:
+            compile_time_ansi_string actual_name;
+        };
+
+        struct unnamed_type_id
+        {
+            FKE_CONSTEXPR unnamed_type_id(const uint64_t hash) :
+                actual_hash{ hash }
+            {}
+
+            FKE_CONSTEXPR unnamed_type_id(const type_id& id) :
+                actual_hash{ id.hash() }
+            {}
+
+            unnamed_type_id& operator=(const unnamed_type_id&) = default;
+
+            FKE_CONSTEXPR uint64_t hash() const
+            {
+                return actual_hash;
+            }
+
+            friend FKE_CONSTEXPR bool operator==(const unnamed_type_id& lhs, const unnamed_type_id& rhs)
+            {
+                return lhs.hash() == rhs.hash();
+            }
+
+            friend FKE_CONSTEXPR bool operator!=(const unnamed_type_id& lhs, const unnamed_type_id& rhs)
+            {
+                return !(lhs == rhs);
+            }
+
+        private:
+            uint64_t actual_hash;
+        };
+
+        template<size_t n>
+        FKE_CONSTEXPR unnamed_type_id id_from_name(const ansichar_t(&typeName)[n])
+        {
+            return hashing::fnv1a_hash<ansichar_t, uint64_t>(typeName);
         }
 
-        FKE_CONSTEXPR const compile_time_ansi_string& name() const
+        FKE_CONSTEXPR unnamed_type_id id_from_name(const ansichar_t* typeName, size_t length)
         {
-            return actual_name;
+            return hashing::fnv1a_hash<ansichar_t, uint64_t>(length, typeName);
         }
 
-        friend FKE_CONSTEXPR bool operator==(const type_id& lhs, const type_id& rhs)
+        FKE_CONSTEXPR unnamed_type_id id_from_name(const compile_time_ansi_string& name)
         {
-            return lhs.hash() == rhs.hash();
+            return hashing::fnv1a_hash<ansichar_t, uint64_t>(name.size(), name.begin());
         }
 
-        friend FKE_CONSTEXPR bool operator!=(const type_id& lhs, const type_id& rhs)
+        // Inline to prevent ODR violation.
+        inline unnamed_type_id id_from_name(const std::string& typeName)
         {
-            return !(lhs == rhs);
+            return hashing::fnv1a_hash<ansichar_t, uint64_t>(typeName.size(), typeName.data());
         }
 
-    private:
-        compile_time_ansi_string actual_name;
-    };
-
-    struct unnamed_type_id
-    {
-        FKE_CONSTEXPR unnamed_type_id(const uint64_t hash) :
-            actual_hash{ hash }
-        {}
-
-        FKE_CONSTEXPR unnamed_type_id(const type_id& id) :
-            actual_hash{ id.hash() }
-        {}
-
-        unnamed_type_id& operator=(const unnamed_type_id&) = default;
-
-        FKE_CONSTEXPR uint64_t hash() const
+        namespace fke_type_id_private
         {
-            return actual_hash;
+            template<typename t>
+            FKE_CONSTEXPR type_id get_type_id()
+            {
+                return { fkengine::fkecore::nameof<t>() };
+            }
+
+            template<typename t>
+            FKE_CONSTEXPR unnamed_type_id get_unnamed_type_id()
+            {
+                return { id_from_name(fkengine::fkecore::nameof<t>()) };
+            }
         }
 
-        friend FKE_CONSTEXPR bool operator==(const unnamed_type_id& lhs, const unnamed_type_id& rhs)
+        template<typename t>
+        FKE_CONSTEXPR type_id get_type_id(t&&)
         {
-            return lhs.hash() == rhs.hash();
+            return fke_type_id_private::get_type_id<typename decay<t>::type>();
         }
 
-        friend FKE_CONSTEXPR bool operator!=(const unnamed_type_id& lhs, const unnamed_type_id& rhs)
-        {
-            return !(lhs == rhs);
-        }
-
-    private:
-        uint64_t actual_hash;
-    };
-
-    template<size_t n>
-    FKE_CONSTEXPR unnamed_type_id id_from_name(const ansichar_t(&typeName)[n])
-    {
-        return hashing::fnv1a_hash<ansichar_t, uint64_t>(typeName);
-    }
-
-    FKE_CONSTEXPR unnamed_type_id id_from_name(const ansichar_t* typeName, size_t length)
-    {
-        return hashing::fnv1a_hash<ansichar_t, uint64_t>(length, typeName);
-    }
-
-    FKE_CONSTEXPR unnamed_type_id id_from_name(const compile_time_ansi_string& name)
-    {
-        return hashing::fnv1a_hash<ansichar_t, uint64_t>(name.size(), name.begin());
-    }
-
-    // Inline to prevent ODR violation.
-    inline unnamed_type_id id_from_name(const std::string& typeName)
-    {
-        return hashing::fnv1a_hash<ansichar_t, uint64_t>(typeName.size(), typeName.data());
-    }
-
-    namespace fke_type_id_private
-    {
         template<typename t>
         FKE_CONSTEXPR type_id get_type_id()
         {
-            return { fkengine::nameof<t>() };
+            return fke_type_id_private::get_type_id<t>();
+        }
+
+        template<typename t>
+        FKE_CONSTEXPR unnamed_type_id get_unnamed_type_id(t&&)
+        {
+            return fke_type_id_private::get_unnamed_type_id<typename decay<t>::type>();
         }
 
         template<typename t>
         FKE_CONSTEXPR unnamed_type_id get_unnamed_type_id()
         {
-            return { id_from_name(fkengine::nameof<t>()) };
+            return fke_type_id_private::get_unnamed_type_id<t>();
         }
-    }
-
-    template<typename t>
-    FKE_CONSTEXPR type_id get_type_id(t&&)
-    {
-        return fke_type_id_private::get_type_id<typename decay<t>::type>();
-    }
-
-    template<typename t>
-    FKE_CONSTEXPR type_id get_type_id()
-    {
-        return fke_type_id_private::get_type_id<t>();
-    }
-
-    template<typename t>
-    FKE_CONSTEXPR unnamed_type_id get_unnamed_type_id(t&&)
-    {
-        return fke_type_id_private::get_unnamed_type_id<typename decay<t>::type>();
-    }
-
-    template<typename t>
-    FKE_CONSTEXPR unnamed_type_id get_unnamed_type_id()
-    {
-        return fke_type_id_private::get_unnamed_type_id<t>();
     }
 }

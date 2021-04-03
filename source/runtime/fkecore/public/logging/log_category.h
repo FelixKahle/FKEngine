@@ -10,20 +10,23 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	/** Base class for all log categories. **/
-	struct FKECORE_API log_category
+	namespace fkecore
 	{
-		log_category(const char_t_string& name)
-			: category_name(name)
-		{}
-
-		const char_t_string& get_name() const
+		/** Base class for all log categories. **/
+		struct FKECORE_API log_category
 		{
-			return category_name;
-		}
+			log_category(const char_t_string& name)
+				: category_name(name)
+			{}
 
-	private:
+			const char_t_string& get_name() const
+			{
+				return category_name;
+			}
 
-		char_t_string category_name;
-	};
+		private:
+
+			char_t_string category_name;
+		};
+	}
 }

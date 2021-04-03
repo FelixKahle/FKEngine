@@ -8,12 +8,16 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	struct windows_platform_string : public microsoft_platform_string
+	namespace fkecore
 	{
-		FKE_STATIC_STRUCT(windows_platform_string)
-	};
 
-	typedef windows_platform_string platform_string;
+		struct windows_platform_string : public microsoft_platform_string
+		{
+			FKE_STATIC_STRUCT(windows_platform_string)
+		};
+
+		typedef windows_platform_string platform_string;
+	}
 }
 
 #if FKE_PLATFORM_64BITS

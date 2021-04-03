@@ -8,65 +8,68 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	struct FKECORE_API buffered_log
+	namespace fkecore
 	{
-		const char_t* data;
-		const char_t_string category_name;
-		const double time;
-		const log_type type;
-
-		buffered_log(const char_t* in_data, const char_t_string& in_category_name, const log_type in_type, const double in_time = -1);
-
-		buffered_log(buffered_log& in_buffered_log)
-			: data(in_buffered_log.data)
-			, category_name(in_buffered_log.category_name)
-			, time(in_buffered_log.time)
-			, type(in_buffered_log.type)
+		struct FKECORE_API buffered_log
 		{
-			in_buffered_log.data = nullptr;
-		}
+			const char_t* data;
+			const char_t_string category_name;
+			const double time;
+			const log_type type;
 
-		~buffered_log();
+			buffered_log(const char_t* in_data, const char_t_string& in_category_name, const log_type in_type, const double in_time = -1);
 
-		FKE_NONCOPYABLE(buffered_log);
-	};
+			buffered_log(buffered_log& in_buffered_log)
+				: data(in_buffered_log.data)
+				, category_name(in_buffered_log.category_name)
+				, time(in_buffered_log.time)
+				, type(in_buffered_log.type)
+			{
+				in_buffered_log.data = nullptr;
+			}
 
-	class FKECORE_API output_device_redirector : public output_device
-	{
-	public:
+			~buffered_log();
 
-		typedef dynamic_array<output_device*> output_device_array;
+			FKE_NONCOPYABLE(buffered_log);
+		};
 
-	public:
+		class FKECORE_API output_device_redirector : public output_device
+		{
+		public:
 
-		static output_device_redirector& get();
+			typedef dynamic_array<output_device*> output_device_array;
 
-	public:
+		public:
 
-		virtual void serialize(const char_t* v, log_type type, const char_t_string& category) override;
-		virtual void flush() override;
+			static output_device_redirector& get();
 
-	public:
+		public:
 
-		output_device_redirector();
+			virtual void serialize(const char_t* v, log_type type, const char_t_string& category) override;
+			virtual void flush() override;
 
-		void add_output_device(output_device* device);
-		void remove_output_device(output_device* device);
-		void flush_threaded_logs();
+		public:
 
-	private:
+			output_device_redirector();
 
-		void serialize_impl(const char_t* data, log_type type, const char_t_string& category, const double time = -1.0f);
+			void add_output_device(output_device* device);
+			void remove_output_device(output_device* device);
+			void flush_threaded_logs();
 
-	private:
+		private:
 
-		dynamic_array<buffered_log*> buffered_logs;
-		output_device_array output_devices;
+			void serialize_impl(const char_t* data, log_type type, const char_t_string& category, const double time = -1.0f);
 
-		/** The id of the master thread. */
-		thread::id master_thread_id;
+		private:
 
-		mutex output_device_mutex;
-		mutex buffer_mutex;
-	};
+			dynamic_array<buffered_log*> buffered_logs;
+			output_device_array output_devices;
+
+			/** The id of the master thread. */
+			thread::id master_thread_id;
+
+			mutex output_device_mutex;
+			mutex buffer_mutex;
+		};
+	}
 }

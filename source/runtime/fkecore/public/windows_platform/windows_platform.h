@@ -190,33 +190,36 @@
 /** The namespace of the FKEngine. */
 namespace fkengine
 {
-	/** Windows specific types. */
-	struct windows_platform_types : public generic_platform_types
+	namespace fkecore
 	{
-		windows_platform_types(windows_platform_types&&) = delete; \
-		windows_platform_types(const windows_platform_types&) = delete; \
-		windows_platform_types& operator=(const windows_platform_types&) = delete; \
-		windows_platform_types& operator=(windows_platform_types&&) = delete; \
-	protected:
+		/** Windows specific types. */
+		struct windows_platform_types : public generic_platform_types
+		{
+			windows_platform_types(windows_platform_types&&) = delete; \
+				windows_platform_types(const windows_platform_types&) = delete; \
+				windows_platform_types& operator=(const windows_platform_types&) = delete; \
+				windows_platform_types& operator=(windows_platform_types&&) = delete; \
+		protected:
 
-		windows_platform_types() {}
+			windows_platform_types() {}
 
-	public:
+		public:
 
 #ifdef FKE_PLATFORM_64BITS
-		/** Unsigned int in the same size as a pointer. */
-		typedef unsigned __int64 size;
-		/** Signed int in the same size as a pointer. */
-		typedef __int64	ssize;
+			/** Unsigned int in the same size as a pointer. */
+			typedef unsigned __int64 size;
+			/** Signed int in the same size as a pointer. */
+			typedef __int64	ssize;
 #else
-		/** Unsigned int in the same size as a pointer. */
-		typedef unsigned long size;
-		/** Signed int in the same size as a pointer. */
-		typedef long ssize;
+			/** Unsigned int in the same size as a pointer. */
+			typedef unsigned long size;
+			/** Signed int in the same size as a pointer. */
+			typedef long ssize;
 #endif
-	};
+		};
 
-	typedef windows_platform_types platform_types;
+		typedef windows_platform_types platform_types;
+	}
 }
 
 #include <Windows.h>

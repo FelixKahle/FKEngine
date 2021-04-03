@@ -41,7 +41,7 @@ add_executable(fketest
 )
 
 # fkecore
-target_link_libraries(fketest PUBLIC fkecore)
+target_link_libraries(fketest fkecore fkeentities)
 
 # Set up the properties for the fketest module.
 set_target_properties(fketest PROPERTIES VERSION ${PROJECT_VERSION})
